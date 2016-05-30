@@ -34,7 +34,27 @@ public class WordTool {
         return word;
     }
 
-    public static void pseudoStem(Map<String, Integer> words) {
+    /**
+     * Pseudo stemmer qui marche plus ou moins pour les verbes du premier groupes et quelques cas particuliers
+     *
+     * @param words
+     */
+    public static String pseudoStemWord(String word) {
+        String stemmedWord = word.replaceFirst("(cien|ciens|ciennes|iens|iennes)$", "e")
+                .replaceFirst("(ues|uent|ua|uaient)$", "uer")
+                .replaceFirst("(ie|ies|ient|irent)$", "ir")
+                .replaceFirst("(logie|logies)$", "log")
+                .replaceFirst("(usion|ution|usions|utions)$", "u")
+                .replaceFirst("(ait|aient)$", "er")
+                .replaceFirst("(amment)$", "ant")
+                .replaceFirst("(emment)$", "ent")
+                .replaceFirst("(eaux)$", "") // voir en dessous
+                .replaceFirst("(aux)$", "al") // un cheval, des chevaux, mais pas un cerval des cerveaux!
+                .replaceFirst("(es|ent|ait|aient)$", "");
+        return stemmedWord;
+    }
+
+    public static void pseudoStemWordCount(Map<String, Integer> words) {
         Map<String, List<String>> stemmed = new TreeMap<>();
 
         Iterator<String> it = words.keySet().iterator();
@@ -44,18 +64,8 @@ public class WordTool {
             if (originalWord.length() < 5) {
                 continue;
             }
-            String stemmedWord = originalWord;
-            stemmedWord = stemmedWord.replaceFirst("(cien|ciens|ciennes|iens|iennes)$", "e");
-            stemmedWord = stemmedWord.replaceFirst("(ues|uent|ua|uaient)$", "uer");
-            stemmedWord = stemmedWord.replaceFirst("(ie|ies|ient|irent)$", "ir");
-            stemmedWord = stemmedWord.replaceFirst("(logie|logies)$", "log");
-            stemmedWord = stemmedWord.replaceFirst("(usion|ution|usions|utions)$", "u");
-            stemmedWord = stemmedWord.replaceFirst("(ait|aient)$", "er");
-            stemmedWord = stemmedWord.replaceFirst("(amment)$", "ant");
-            stemmedWord = stemmedWord.replaceFirst("(emment)$", "ent");
-            stemmedWord = stemmedWord.replaceFirst("(eaux)$", "");
-            stemmedWord = stemmedWord.replaceFirst("(aux)$", "al"); // un cheval, des chevaux, mais pas un cerval des cerveaux!
-            stemmedWord = stemmedWord.replaceFirst("(es|ent|ait|aient)$", "");
+            String stemmedWord = pseudoStemWord(originalWord);
+
             // add stemmed word to the list
             if (stemmed.containsKey(stemmedWord)) {
                 stemmed.get(stemmedWord).add(originalWord);
@@ -70,7 +80,6 @@ public class WordTool {
         // e.g. keeping only one word for ["journal", "journaux"] ==> "journal"
         for (Map.Entry<String, List<String>> entry : stemmed.entrySet()) {
             if (entry.getValue().size() > 1) {
-//                System.out.println(entry.getKey() + " > " + entry.getValue());
                 String firstWord = null;
                 for (String word : entry.getValue()) {
                     // skip first

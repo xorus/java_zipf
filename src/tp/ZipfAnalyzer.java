@@ -27,7 +27,7 @@ public class ZipfAnalyzer {
 
         wordCount = new TreeMap<>();
         readFile();
-        WordTool.pseudoStem(wordCount);
+        WordTool.pseudoStemWordCount(wordCount);
     }
 
     private void readFile() {
