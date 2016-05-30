@@ -88,15 +88,14 @@ public class WordTool {
                         continue;
                     }
                     // remove the word from the original matches and add it's value to the original word
-                    System.out.println("removing " + word + " from collection, collecting : "
-                            + words.get(firstWord) + " + " + words.get(word) + " points");
+//                    System.out.println("removing " + word + " from collection, collecting : "
+//                            + words.get(firstWord) + " + " + words.get(word) + " points");
                     words.put(firstWord, words.get(firstWord) +
                             words.get(word));
                     words.remove(word);
                 }
             }
         }
-
-        System.out.println(stemmed);
+//        System.out.println(stemmed);
     }
 }

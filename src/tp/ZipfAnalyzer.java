@@ -12,7 +12,6 @@ import java.util.TreeMap;
  * Created by xorus on 30/05/16.
  */
 public class ZipfAnalyzer {
-
     private Map<String, Integer> wordCount;
 
     private BufferedReader reader;
@@ -27,7 +26,10 @@ public class ZipfAnalyzer {
 
         wordCount = new TreeMap<>();
         readFile();
+        Integer wNumber = wordCount.size();
+        System.out.println("Suppression des mots superflus par pseudo stemming");
         WordTool.pseudoStemWordCount(wordCount);
+        System.out.println("Ménage effectué ! " + (wNumber - wordCount.size()) + " mots en moins.");
     }
 
     private void readFile() {
